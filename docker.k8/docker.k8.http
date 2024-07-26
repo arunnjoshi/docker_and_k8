@@ -1,0 +1,6 @@
+@docker.k8_HostAddress = http://localhost:5107
+
+GET {{docker.k8_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
