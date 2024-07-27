@@ -15,6 +15,8 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0
 
 COPY --from=build-env /app/out .
 
-EXPOSE 8080
+ENV PORT=8080
+
+EXPOSE $PORT
 
 ENTRYPOINT ["dotnet", "docker.k8.dll"]

@@ -7,10 +7,19 @@ builder.Services.AddSwaggerGen();
 builder.Configuration.SetBasePath(Directory.GetCurrentDirectory())
                      .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
 
-builder.WebHost.ConfigureKestrel((context, options) =>
+
+var port = Environment.GetEnvironmentVariable("PORT");
+Console.WriteLine($"Current PORT: {port}");
+if (!string.IsNullOrEmpty(port))
 {
-    options.Configure(context.Configuration.GetSection("Kestrel"));
-});
+    builder.WebHost.UseUrls($"http://*:{port}");
+}
+
+// builder.WebHost.ConfigureKestrel((context, options) =>
+// {
+//     options.Configure(context.Configuration.GetSection("Kestrel"));
+// });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
