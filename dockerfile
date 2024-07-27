@@ -12,10 +12,9 @@ RUN ["dotnet", "publish", "-c", "Release", "-o", "out"]
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 
-WORKDIR /app
 
 COPY --from=build-env /app/out .
 
-EXPOSE 5107
+EXPOSE 8080
 
 ENTRYPOINT ["dotnet", "docker.k8.dll"]
