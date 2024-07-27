@@ -1,5 +1,12 @@
+using Serilog;
 var builder = WebApplication.CreateBuilder(args);
 
+
+// Configure Serilog before configuring services
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .CreateLogger();
+builder.Host.UseSerilog();
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -36,17 +43,18 @@ var summaries = new[]
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
 };
 
-app.MapGet("/weatherforecast", () =>
+app.MapGet("/weatherforecast", async (ILogger<Program> logger) =>
 {
-    var forecast = Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
+    var http = new HttpClient();
+    var responseMessage = await http.GetAsync("https://jsonplaceholder.typicode.com/todos");
+    if (responseMessage.IsSuccessStatusCode)
+    {
+        var res = await responseMessage.Content.ReadAsStringAsync();
+        logger.LogInformation("Get Req from {url} and {res}", "https://jsonplaceholder.typicode.com/todos", res);
+        return res;
+    }
+
+    return string.Empty;
 })
 .WithName("GetWeatherForecast")
 .WithOpenApi();
