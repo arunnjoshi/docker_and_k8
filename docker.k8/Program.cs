@@ -53,7 +53,6 @@ app.MapGet("/weatherforecast", async (ILogger<Program> logger) =>
         logger.LogInformation("Get Req from {url} and {res}", "https://jsonplaceholder.typicode.com/todos", res);
         return res;
     }
-
     return string.Empty;
 })
 .WithName("GetWeatherForecast")
