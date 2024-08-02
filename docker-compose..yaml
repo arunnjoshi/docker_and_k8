@@ -1,0 +1,8 @@
+services:
+  WebApi:
+    build: ./
+    image: docker_and_k8_webapi
+    environment:
+      - PORT=8100
+    ports:
+      - "8080:8100"
