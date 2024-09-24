@@ -43,7 +43,7 @@ var summaries = new[]
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
 };
 
-app.MapGet("/weatherforecast", async (ILogger<Program> logger) =>
+app.MapGet("/weatherforecast_v1", async (ILogger<Program> logger) =>
 {
     var http = new HttpClient();
     var responseMessage = await http.GetAsync("https://jsonplaceholder.typicode.com/todos");
