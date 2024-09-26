@@ -15,11 +15,17 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: arunjoshi-deployment
+  labels:
+    group: example
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: arunjoshi-app
+    # matchExpressions:
+    #   - key: app
+    #     operator: In
+    #     values: [arunjoshi-app]
   template:
     metadata:
       labels:

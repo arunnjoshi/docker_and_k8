@@ -5,8 +5,12 @@ metadata:
 spec:
   replicas: 1
   selector:
-    matchLabels:
-      app: arunjoshi-app
+    # matchLabels:
+    # app: arunjoshi-app
+    matchExpressions:
+      - key: app
+        operator: In
+        values: [arunjoshi-app]
   template:
     metadata:
       labels:
