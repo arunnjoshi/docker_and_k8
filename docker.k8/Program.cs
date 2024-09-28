@@ -58,6 +58,72 @@ app.MapGet("/weatherforecast_v1", async (ILogger<Program> logger) =>
 .WithName("GetWeatherForecast")
 .WithOpenApi();
 
+app.MapGet("/GetFileContent", () =>
+{
+    try
+    {
+        Console.WriteLine(Environment.CurrentDirectory);
+        string contents = File.ReadAllText("./Data/temp.txt");
+        return Results.Ok(contents); // Explicit return of result
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Exception while Get File Content : {ex.Message}");
+        return Results.Problem($"Error reading file: {ex.Message}"); // Returning an error result
+    }
+})
+.WithName("GetFileContent")
+.WithOpenApi();
+
+
+app.MapGet("/SetFile", static (string Content) =>
+{
+    try
+    {
+        Console.WriteLine(Environment.CurrentDirectory);
+        if (!Directory.Exists("./Data"))
+        {
+            Console.WriteLine("Creating Directory");
+            Directory.CreateDirectory("./Data");
+        }
+
+        if (!File.Exists("./Data/temp.txt"))
+        {
+            Console.WriteLine("Creating file");
+            using (File.Create("./Data/temp.txt")) { } // This ensures the file stream is properly closed
+        }
+        Console.WriteLine(Environment.CurrentDirectory);
+        Console.WriteLine("Appending to File");
+        File.AppendAllText("./Data/temp.txt", Content + Environment.NewLine);
+        return Results.Ok(true); // Explicit success response
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Exception while SetFile: {ex.Message}");
+        return Results.Problem($"Error setting file content: {ex.Message}");
+    }
+})
+.WithName("SetFile")
+.WithOpenApi();
+
+
+
+app.MapGet("/Error", () =>
+{
+    try
+    {
+        Console.WriteLine($"restarting the pod.");
+        Environment.Exit(1);
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Exception while SetFile: {ex.Message}");
+    }
+})
+.WithName("Error")
+.WithOpenApi();
+
+
 app.Run();
 
 record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)

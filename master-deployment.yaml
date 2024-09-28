@@ -33,7 +33,11 @@ spec:
     spec:
       containers:
         - name: arunjoshi-node
-          image:
-            arunnjoshi/docker.k8:3
-            # ports:
-            #   - containerPort: 80
+          image: arunnjoshi/docker.k8:8
+          volumeMounts:
+            - mountPath: /Data/
+              name: text-file
+          # imagePullPolicy: Always
+      volumes:
+        - name: text-file
+          emptyDir: {}

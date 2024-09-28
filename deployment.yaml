@@ -18,7 +18,4 @@ spec:
     spec:
       containers:
         - name: arunjoshi-node
-          image:
-            arunnjoshi/docker.k8:3
-            # ports:
-            #   - containerPort: 80
+          image: arunnjoshi/docker.k8:3
