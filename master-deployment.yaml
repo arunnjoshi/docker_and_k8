@@ -37,7 +37,37 @@ spec:
           volumeMounts:
             - mountPath: /Data/
               name: text-file
-          # imagePullPolicy: Always
+          imagePullPolicy: Always
       volumes:
         - name: text-file
-          emptyDir: {}
+          persistentVolumeClaim:
+            claimName: host-pvc
+---
+# host president volume
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: host-pv
+spec:
+  capacity:
+    storage: 1Gi
+  volumeMode: Filesystem
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /Data/
+    type: DirectoryOrCreate
+# Host Claim volume
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: host-pvc
+spec:
+  volumeName: host-pv
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
