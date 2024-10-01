@@ -8,7 +8,7 @@ spec:
   ports:
     - port: 80
       protocol: "TCP"
-      targetPort: 8080
+      targetPort: 4200
   type: LoadBalancer
 ---
 apiVersion: apps/v1
@@ -38,6 +38,12 @@ spec:
             - mountPath: /Data/
               name: text-file
           imagePullPolicy: Always
+          env:
+            - name: PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: port-config-map
+                  key: PORT
       volumes:
         - name: text-file
           persistentVolumeClaim:
@@ -71,3 +77,10 @@ spec:
   resources:
     requests:
       storage: 1Gi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: port-config-map
+data:
+  PORT: "4200"
