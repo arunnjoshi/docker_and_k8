@@ -16,6 +16,8 @@ builder.Configuration.SetBasePath(Directory.GetCurrentDirectory())
 
 
 var port = Environment.GetEnvironmentVariable("PORT");
+var url = Environment.GetEnvironmentVariable("URL");
+Console.WriteLine(url);
 Console.WriteLine($"Current PORT: {port}");
 if (!string.IsNullOrEmpty(port))
 {

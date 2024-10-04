@@ -44,6 +44,8 @@ spec:
                 configMapKeyRef:
                   name: port-config-map
                   key: PORT
+            - name: URL
+              value: "backend.default"
       volumes:
         - name: text-file
           persistentVolumeClaim:
