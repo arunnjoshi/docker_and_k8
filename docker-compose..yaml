@@ -7,3 +7,13 @@ services:
       - PORT=8100
     ports:
       - "8080:8100"
+    depends_on:
+      - db
+  db:
+    environment:
+      - SA_PASSWORD=YourP@ssword123
+      - ACCEPT_EULA=Y
+    container_name: sqlserver_instance
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    ports:
+      - "1435:1433"
